@@ -1,0 +1,25 @@
+apply plugin: 'java'
+
+group = "jupyter"
+version = '0.1.0'
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+ext {
+  scalaVersion = '2.11'
+}
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+dependencies {
+  compile 'org.slf4j:slf4j-api:1.7.5'
+  compile 'com.google.guava:guava:11.0.2'
+
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.slf4j:slf4j-simple:1.7.5'
+  testCompile 'org.mockito:mockito-all:1.10.19'
+}
