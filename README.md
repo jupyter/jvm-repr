@@ -38,6 +38,8 @@ import vegas.DSL.ExtendedUnitSpecBuilder
 
 Any kernel implementation can use the method to display Vegas graphs for the DSL objects.
 
+Library authors can optionally implement `setMimeTypes(String...)` to receive hints for the MIME types that the kernel or front-end supports. It is recommended that library authors use these hints to avoid expensive conversions.
+
 ### Kernel implementers
 
 Kernel implementors can use this API to display registered objects:
@@ -52,3 +54,4 @@ import java.util.Map
   Kernel.this.display(resultByMIME);
 ```
 
+Kernel implementers can optionally call `Displayers.setMimeTypes(String...)` to send hints to display implementations with the set of MIME types that can be used by the kernel or front-end.
