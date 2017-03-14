@@ -5,8 +5,8 @@ JVM languages use various conventions to convert REPL outputs to forms that can 
 ## Using this API
 
 This API has two main uses:
-* To provide conversions from a library's JVM objects to useful representations by MIME type
-* To provide kernels conversions from any JVM object to useful representations by MIME type
+* For library authors to provide conversions from a library's JVM objects to useful representations by MIME type
+* To provide a common way for kernel implementers to convert any JVM object to useful representations by MIME type
 
 ### Library authors
 
@@ -39,4 +39,16 @@ import vegas.DSL.ExtendedUnitSpecBuilder
 Any kernel implementation can use the method to display Vegas graphs for the DSL objects.
 
 ### Kernel implementers
+
+Kernel implementors can use this API to display registered objects:
+
+```java
+import java.util.Map
+
+...
+
+  Object result = interpreter.eval(code);
+  Map<String, String> resultByMIME = Displayers.display(result);
+  Kernel.this.display(resultByMIME);
+```
 
