@@ -16,6 +16,7 @@
 
 package jupyter;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,46 @@ class ToStringDisplayer extends Displayer<Object> {
   @Override
   public Map<String, String> display(Object obj) {
     Map<String, String> result = new HashMap<>();
-    result.put("text/plain", obj.toString());
+
+    if (obj.getClass().isArray()) {
+      result.put("text/plain", displayArray(obj));
+    } else {
+      result.put("text/plain", obj.toString());
+    }
+
     return result;
+  }
+
+  private String displayArray(Object obj) {
+    Class<?> type = obj.getClass().getComponentType();
+    if (type == Boolean.TYPE) {
+      return Arrays.toString((int[]) obj);
+    } else if (type == Byte.TYPE) {
+      return Arrays.toString((byte[]) obj);
+    } else if (type == Short.TYPE) {
+      return Arrays.toString((short[]) obj);
+    } else if (type == Integer.TYPE) {
+      return Arrays.toString((int[]) obj);
+    } else if (type == Long.TYPE) {
+      return Arrays.toString((long[]) obj);
+    } else if (type == Float.TYPE) {
+      return Arrays.toString((float[]) obj);
+    } else if (type == Double.TYPE) {
+      return Arrays.toString((double[]) obj);
+    } else if (type == Character.TYPE) {
+      return Arrays.toString((char[]) obj);
+    } else {
+      Object[] arr = (Object[]) obj;
+      StringBuilder sb = new StringBuilder();
+
+      sb.append("[").append(Displayers.display(arr[0]).get("text/plain"));
+      for (int i = 1; i < arr.length; i += 1) {
+        String asText = Displayers.display(arr[i]).get("text/plain");
+        sb.append(", ").append(asText);
+      }
+      sb.append("]");
+
+      return sb.toString();
+    }
   }
 }

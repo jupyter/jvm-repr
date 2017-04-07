@@ -32,6 +32,7 @@ public class Registration {
 
   private final Map<Class<?>, Displayer<?>> displayers = new HashMap<>();
   private Displayer<Object> defaultDisplayer = ToStringDisplayer.get();
+  private String[] mimeTypes = null;
 
   public Map<Class<?>, Displayer<?>> getAll() {
     return Collections.unmodifiableMap(displayers);
@@ -43,9 +44,11 @@ public class Registration {
    * @param types supported MIME types
    */
   public void setMimeTypes(String... types) {
+    this.mimeTypes = types;
     for (Displayer<?> displayer : displayers.values()) {
       displayer.setMimeTypes(types);
     }
+    defaultDisplayer.setMimeTypes(types);
   }
 
   /**
@@ -65,6 +68,9 @@ public class Registration {
    * @param displayer a Displayer instance
    */
   public <T> void add(Class<T> objClass, Displayer<T> displayer) {
+    if (mimeTypes != null) {
+      displayer.setMimeTypes(mimeTypes);
+    }
     displayers.put(objClass, displayer);
   }
 
@@ -91,5 +97,10 @@ public class Registration {
     }
 
     return defaultDisplayer;
+  }
+
+  // Visible for testing
+  void clear() {
+    displayers.clear();
   }
 }
