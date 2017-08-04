@@ -48,6 +48,6 @@ public abstract class Displayer<T> {
    *
    * @param types MIME types that are supported by the kernel
    */
-  void setMimeTypes(String... types) {
+  public void setMimeTypes(String... types) {
   }
 }
