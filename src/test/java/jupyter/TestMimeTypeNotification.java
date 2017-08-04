@@ -52,7 +52,7 @@ public class TestMimeTypeNotification {
     }
 
     @Override
-    void setMimeTypes(String... types) {
+    public void setMimeTypes(String... types) {
       mimeTypes = new HashSet<>(Arrays.asList(types));
     }
   }
