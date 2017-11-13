@@ -44,7 +44,7 @@ class ToStringDisplayer extends Displayer<Object> {
   private String displayArray(Object obj) {
     Class<?> type = obj.getClass().getComponentType();
     if (type == Boolean.TYPE) {
-      return Arrays.toString((int[]) obj);
+      return Arrays.toString((boolean[]) obj);
     } else if (type == Byte.TYPE) {
       return Arrays.toString((byte[]) obj);
     } else if (type == Short.TYPE) {
