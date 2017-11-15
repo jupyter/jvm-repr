@@ -63,14 +63,19 @@ class ToStringDisplayer extends Displayer<Object> {
       Object[] arr = (Object[]) obj;
       StringBuilder sb = new StringBuilder();
 
-      sb.append("[").append(Displayers.display(arr[0]).get("text/plain"));
+      sb.append("[").append(displayElement(arr[0]));
       for (int i = 1; i < arr.length; i += 1) {
-        String asText = Displayers.display(arr[i]).get("text/plain");
+        String asText = displayElement(arr[i]);
         sb.append(", ").append(asText);
       }
       sb.append("]");
 
       return sb.toString();
     }
+  }
+
+  private String displayElement(Object obj) {
+    // Displayers.display doesn't accept nulls
+    return obj != null ? Displayers.display(obj).get("text/plain") : "null";
   }
 }

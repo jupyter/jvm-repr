@@ -93,6 +93,13 @@ public class Registration {
         return (Displayer<? super T>) displayer;
       }
 
+      for (Class<?> iface : currentClass.getInterfaces()) {
+        displayer = displayers.get(iface);
+        if (displayers.get(iface) != null) {
+          return (Displayer<? super T>) displayer;
+        }
+      }
+
       currentClass = currentClass.getSuperclass();
     }
 

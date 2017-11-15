@@ -26,7 +26,13 @@ import java.util.Random;
 
 public class TestRegistration {
 
-  private static class TestObject {
+  private interface TestInterface {
+  }
+
+  private static class TestObject implements TestInterface {
+  }
+
+  private static class TestObjectSubclass extends TestObject {
   }
 
   @Before
@@ -56,6 +62,56 @@ public class TestRegistration {
     Assert.assertEquals("Should return registered displayer for instance",
         asMap(MIMETypes.TEXT, expectedString),
         Displayers.display(new TestObject()));
+  }
+
+  @Test
+  public void testWalkSuperclasses() {
+    // generate a random string to validate the display method. only the right
+    // displayer will return this string.
+    Random rand = new Random();
+    final String expectedString = Double.toString(rand.nextDouble());
+
+    Displayer<TestObject> expected = new Displayer<TestObject>() {
+      @Override
+      public Map<String, String> display(TestObject obj) {
+        return asMap(MIMETypes.TEXT, expectedString);
+      }
+    };
+
+    Displayers.register(TestObject.class, expected);
+
+    Assert.assertEquals("Should return registered displayer for sub-class",
+        expected, Displayers.registration().find(TestObjectSubclass.class));
+    Assert.assertEquals("Should return registered displayer for instance",
+        asMap(MIMETypes.TEXT, expectedString),
+        Displayers.display(new TestObjectSubclass()));
+  }
+
+  @Test
+  public void testWalkInterfaces() {
+    // generate a random string to validate the display method. only the right
+    // displayer will return this string.
+    Random rand = new Random();
+    final String expectedString = Double.toString(rand.nextDouble());
+
+    Displayer<TestInterface> expected = new Displayer<TestInterface>() {
+      @Override
+      public Map<String, String> display(TestInterface obj) {
+        return asMap(MIMETypes.TEXT, expectedString);
+      }
+    };
+
+    Displayers.register(TestInterface.class, expected);
+
+    Assert.assertEquals("Should return registered displayer for interface",
+        expected, Displayers.registration().find(TestInterface.class));
+    Assert.assertEquals("Should return registered displayer for class",
+        expected, Displayers.registration().find(TestObject.class));
+    Assert.assertEquals("Should return registered displayer for sub-class",
+        expected, Displayers.registration().find(TestObjectSubclass.class));
+    Assert.assertEquals("Should return registered displayer for instance",
+        asMap(MIMETypes.TEXT, expectedString),
+        Displayers.display(new TestObjectSubclass()));
   }
 
   @Test
