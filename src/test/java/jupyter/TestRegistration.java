@@ -26,7 +26,10 @@ import java.util.Random;
 
 public class TestRegistration {
 
-  private interface TestInterface {
+  private interface TestSuperInterface {
+  }
+
+  private interface TestInterface extends TestSuperInterface {
   }
 
   private static class TestObject implements TestInterface {
@@ -105,6 +108,35 @@ public class TestRegistration {
 
     Assert.assertEquals("Should return registered displayer for interface",
         expected, Displayers.registration().find(TestInterface.class));
+    Assert.assertEquals("Should return registered displayer for class",
+        expected, Displayers.registration().find(TestObject.class));
+    Assert.assertEquals("Should return registered displayer for sub-class",
+        expected, Displayers.registration().find(TestObjectSubclass.class));
+    Assert.assertEquals("Should return registered displayer for instance",
+        asMap(MIMETypes.TEXT, expectedString),
+        Displayers.display(new TestObjectSubclass()));
+  }
+
+  @Test
+  public void testWalkSuperInterfaces() {
+    // generate a random string to validate the display method. only the right
+    // displayer will return this string.
+    Random rand = new Random();
+    final String expectedString = Double.toString(rand.nextDouble());
+
+    Displayer<TestSuperInterface> expected = new Displayer<TestSuperInterface>() {
+      @Override
+      public Map<String, String> display(TestSuperInterface obj) {
+        return asMap(MIMETypes.TEXT, expectedString);
+      }
+    };
+
+    Displayers.register(TestSuperInterface.class, expected);
+
+    Assert.assertEquals("Should return registered displayer for interface",
+        expected, Displayers.registration().find(TestInterface.class));
+    Assert.assertEquals("Should return registered displayer for interface",
+        expected, Displayers.registration().find(TestSuperInterface.class));
     Assert.assertEquals("Should return registered displayer for class",
         expected, Displayers.registration().find(TestObject.class));
     Assert.assertEquals("Should return registered displayer for sub-class",

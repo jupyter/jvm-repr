@@ -18,7 +18,10 @@ package jupyter;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Handles registration of {@link Displayer} instances.
@@ -85,22 +88,29 @@ public class Registration {
    */
   @SuppressWarnings("unchecked")
   public <T> Displayer<? super T> find(Class<T> objClass) {
-    Class<? super T> currentClass = objClass;
+    Set<Class<?>> visited = new HashSet<>();
+    visited.add(Object.class); // stop search with Object
+    LinkedList<Class<? super T>> classes = new LinkedList<>();
+    classes.addLast(objClass);
 
-    while (currentClass != Object.class) {
+    while (!classes.isEmpty()) {
+      Class<? super T> currentClass = classes.removeFirst();
       Displayer<?> displayer = displayers.get(currentClass);
       if (displayer != null) {
         return (Displayer<? super T>) displayer;
       }
 
       for (Class<?> iface : currentClass.getInterfaces()) {
-        displayer = displayers.get(iface);
-        if (displayers.get(iface) != null) {
-          return (Displayer<? super T>) displayer;
+        if (!visited.contains(iface)) {
+          classes.add((Class<? super T>) iface);
         }
       }
 
-      currentClass = currentClass.getSuperclass();
+      Class<? super T> superClass = currentClass.getSuperclass();
+      // interface superclasses can be null
+      if (superClass != null && !visited.contains(superClass)) {
+        classes.add(superClass);
+      }
     }
 
     return defaultDisplayer;
