@@ -30,7 +30,7 @@ public abstract class Displayers {
   }
 
   /**
-   * Registers a Displayer instance for a class in this JVM.
+   * Registers a Displayer instance for a class or interface in this JVM.
    *
    * @param objClass the class of objects to display
    * @param displayer a Displayer instance

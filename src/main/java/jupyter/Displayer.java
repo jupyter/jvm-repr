@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Converts objects to representations for display, by MIME type.
  *
- * @param <T> the class or superclass of objects the instance can convert.
+ * @param <T> the class or interface of objects the instance can convert.
  */
 public abstract class Displayer<T> {
   /**
@@ -30,7 +30,7 @@ public abstract class Displayer<T> {
    * This method should return a map of MIME type strings to representations of
    * the object in that MIME type.
    * <p>
-   * This method can be called to display objects of type T or subclasses of T.
+   * This method can be called to display objects of type T or subtypes of T.
    * <p>
    * To avoid extra conversion, kernels or front-ends can call
    * {@link #setMimeTypes(String...)} to pass supported MIME types.

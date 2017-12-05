@@ -80,8 +80,12 @@ public class Registration {
   /**
    * Finds the most specific Displayer instance for a class.
    * <p>
-   * A displayer is found by checking registrations for the given class and its
-   * superclasses. The most specific displayer will be returned.
+   * A displayer is found by checking registrations for the given class, its interfaces, its
+   * superclasses, and each superclass's interfaces using a breadth-first search. The search visits
+   * a class, then its interfaces in left-to-right order, then its superclass, the superclass's
+   * interfaces, and so on.
+   * <p>
+   * The first displayer that can handle the class will be returned.
    *
    * @param objClass the class of objects to display
    * @return a Displayer instance for this class or one of its superclasses.
