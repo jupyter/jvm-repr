@@ -63,10 +63,13 @@ class ToStringDisplayer extends Displayer<Object> {
       Object[] arr = (Object[]) obj;
       StringBuilder sb = new StringBuilder();
 
-      sb.append("[").append(displayElement(arr[0]));
-      for (int i = 1; i < arr.length; i += 1) {
-        String asText = displayElement(arr[i]);
-        sb.append(", ").append(asText);
+      sb.append("[");
+      if (arr.length > 0) {
+        sb.append(displayElement(arr[0]));
+        for (int i = 1; i < arr.length; i += 1) {
+          String asText = displayElement(arr[i]);
+          sb.append(", ").append(asText);
+        }
       }
       sb.append("]");
 
