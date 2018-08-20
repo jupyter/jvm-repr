@@ -72,6 +72,9 @@ public class TestToStringDisplayer {
     Assert.assertEquals("Object[]",
         asMap(MIMETypes.TEXT, "[CustomClass(tangerine), null, 34]"),
         toString.display(new Object[] { new CustomClass("tangerine"), null, 34 }));
+    Assert.assertEquals("empty Object[]",
+            asMap(MIMETypes.TEXT, "[]"),
+            toString.display(new Object[] {}));
   }
 
   @Test
