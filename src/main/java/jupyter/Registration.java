@@ -85,13 +85,15 @@ public class Registration {
    * a class, then its interfaces in left-to-right order, then its superclass, the superclass's
    * interfaces, and so on.
    * <p>
-   * The first displayer that can handle the class will be returned.
+   * The first displayer that can handle the class will be returned. If none is found, defaultDisplayer
+   * is returned.
    *
    * @param objClass the class of objects to display
+   * @param defaultDisplayer default Displayer if none is found
    * @return a Displayer instance for this class or one of its superclasses.
    */
   @SuppressWarnings("unchecked")
-  public <T> Displayer<? super T> find(Class<T> objClass) {
+  public <T> Displayer<? super T> find(Class<T> objClass, Displayer<? super T> defaultDisplayer) {
     Set<Class<?>> visited = new HashSet<>();
     visited.add(Object.class); // stop search with Object
     LinkedList<Class<? super T>> classes = new LinkedList<>();
@@ -118,6 +120,26 @@ public class Registration {
     }
 
     return defaultDisplayer;
+  }
+
+  /**
+   * Finds the most specific Displayer instance for a class.
+   * <p>
+   * A displayer is found by checking registrations for the given class, its interfaces, its
+   * superclasses, and each superclass's interfaces using a breadth-first search. The search visits
+   * a class, then its interfaces in left-to-right order, then its superclass, the superclass's
+   * interfaces, and so on.
+   * <p>
+   * The first displayer that can handle the class will be returned.
+   *
+   * @param objClass the class of objects to display
+   * @return a Displayer instance for this class or one of its superclasses.
+   *
+   * @see jupyter.Registration#find(Class, Displayer)
+   */
+  @SuppressWarnings("unchecked")
+  public <T> Displayer<? super T> find(Class<T> objClass) {
+    return find(objClass, defaultDisplayer);
   }
 
   // Visible for testing

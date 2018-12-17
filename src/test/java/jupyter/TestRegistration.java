@@ -35,6 +35,9 @@ public class TestRegistration {
   private static class TestObject implements TestInterface {
   }
 
+  private static class TestUnregisteredObject implements TestInterface {
+  }
+
   private static class TestObjectSubclass extends TestObject {
   }
 
@@ -167,6 +170,23 @@ public class TestRegistration {
     Assert.assertEquals("Should return registered displayer for array instance",
         asMap(MIMETypes.TEXT, expectedString),
         Displayers.display(new TestObject[] {}));
+  }
+
+  @Test
+  public void testDefaultDisplayer() {
+    Displayer<Object> expectedDefaultDisplayer = new Displayer<Object>() {
+      @Override
+      public Map<String, String> display(Object obj) {
+        return asMap(MIMETypes.TEXT, "***");
+      }
+    };
+
+    Assert.assertEquals("Should return default displayer for unregistered class",
+            ToStringDisplayer.get(),
+            Displayers.registration().find(TestUnregisteredObject.class));
+    Assert.assertEquals("Should return passed default displayer for unregistered class",
+            expectedDefaultDisplayer,
+            Displayers.registration().find(TestUnregisteredObject.class, expectedDefaultDisplayer));
   }
 
   private Map<String, String> asMap(String mimeType, String asText) {
