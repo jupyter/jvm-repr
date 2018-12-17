@@ -36,6 +36,22 @@ public class Registration {
   private final Map<Class<?>, Displayer<?>> displayers = new HashMap<>();
   private Displayer<Object> defaultDisplayer = ToStringDisplayer.get();
   private String[] mimeTypes = null;
+  private final boolean registerAsDisplayData;
+
+  private void init() {
+    if (registerAsDisplayData) {
+      add(AsDisplayData.class, AsDisplayData.displayer);
+    }
+  }
+
+  public Registration() {
+      this(true);
+  }
+
+  public Registration(boolean registerAsDisplayData) {
+    this.registerAsDisplayData = registerAsDisplayData;
+    init();
+  }
 
   public Map<Class<?>, Displayer<?>> getAll() {
     return Collections.unmodifiableMap(displayers);
@@ -123,5 +139,6 @@ public class Registration {
   // Visible for testing
   void clear() {
     displayers.clear();
+    init();
   }
 }
