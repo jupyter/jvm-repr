@@ -9,11 +9,7 @@ import java.util.Map;
  * by default, without needing to register a {@link Displayer} in advance.
  */
 public interface AsDisplayData {
-    Map<String, String> display();
-
-    Displayer<AsDisplayData> displayer = new Displayer<AsDisplayData>() {
-        public Map<String, String> display(AsDisplayData obj) {
-            return obj.display();
-        }
-    };
+  Map<String, String> display();
+  default void setMimeTypes(String... types) {
+  }
 }

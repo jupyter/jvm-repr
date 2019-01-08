@@ -36,20 +36,19 @@ public class Registration {
   private final Map<Class<?>, Displayer<?>> displayers = new HashMap<>();
   private Displayer<Object> defaultDisplayer = ToStringDisplayer.get();
   private String[] mimeTypes = null;
-  private final boolean registerAsDisplayData;
+  private final boolean registerAsDisplayData = true;
+
+  private static Displayer<AsDisplayData> asDisplayDataDisplayer = new Displayer<AsDisplayData>() {
+    public Map<String, String> display(AsDisplayData obj) {
+      return obj.display();
+    }
+  };
 
   private void init() {
-    if (registerAsDisplayData) {
-      add(AsDisplayData.class, AsDisplayData.displayer);
-    }
+    add(AsDisplayData.class, asDisplayDataDisplayer);
   }
 
   public Registration() {
-      this(true);
-  }
-
-  public Registration(boolean registerAsDisplayData) {
-    this.registerAsDisplayData = registerAsDisplayData;
     init();
   }
 
