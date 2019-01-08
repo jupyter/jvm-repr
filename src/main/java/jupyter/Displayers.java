@@ -57,8 +57,10 @@ public abstract class Displayers {
    */
   @SuppressWarnings("unchecked")
   public static <T> Map<String, String> display(T obj) {
-    return registration()
-        .find((Class<T>) obj.getClass())
-        .display(obj);
+    Displayer<? super T> displayer = registration().find((Class<T>) obj.getClass());
+    if (displayer != null)
+      return displayer.display(obj);
+    else
+      return null;
   }
 }
