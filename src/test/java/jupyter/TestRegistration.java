@@ -20,6 +20,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import jupyter.Displayers;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -167,6 +171,16 @@ public class TestRegistration {
     Assert.assertEquals("Should return registered displayer for array instance",
         asMap(MIMETypes.TEXT, expectedString),
         Displayers.display(new TestObject[] {}));
+  }
+
+  @Test
+  public void testNullDefault() {
+    Displayers.registration().setDefault(null);
+    Assert.assertEquals("Should return null default displayer for class",
+        null, Displayers.registration().find(TestObject.class));
+    Assert.assertEquals("Should return null default display for instance",
+        Collections.emptyMap(),
+        Displayers.display(new TestObject()));
   }
 
   private Map<String, String> asMap(String mimeType, String asText) {
