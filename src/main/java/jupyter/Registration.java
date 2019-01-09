@@ -51,8 +51,9 @@ public class Registration {
     for (Displayer<?> displayer : displayers.values()) {
       displayer.setMimeTypes(types);
     }
-    if (defaultDisplayer != null)
+    if (defaultDisplayer != null) {
       defaultDisplayer.setMimeTypes(types);
+    }
   }
 
   /**
