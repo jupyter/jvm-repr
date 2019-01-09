@@ -124,5 +124,6 @@ public class Registration {
   // Visible for testing
   void clear() {
     displayers.clear();
+    defaultDisplayer = ToStringDisplayer.get();
   }
 }
