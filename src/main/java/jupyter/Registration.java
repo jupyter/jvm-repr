@@ -36,7 +36,6 @@ public class Registration {
   private final Map<Class<?>, Displayer<?>> displayers = new HashMap<>();
   private Displayer<Object> defaultDisplayer = ToStringDisplayer.get();
   private String[] mimeTypes = null;
-  private final boolean registerAsDisplayData = true;
 
   private static Displayer<AsDisplayData> asDisplayDataDisplayer = new Displayer<AsDisplayData>() {
     public Map<String, String> display(AsDisplayData obj) {
