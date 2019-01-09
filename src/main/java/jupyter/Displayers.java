@@ -16,6 +16,7 @@
 
 package jupyter;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -58,9 +59,10 @@ public abstract class Displayers {
   @SuppressWarnings("unchecked")
   public static <T> Map<String, String> display(T obj) {
     Displayer<? super T> displayer = registration().find((Class<T>) obj.getClass());
-    if (displayer != null)
+    if (displayer != null) {
       return displayer.display(obj);
-    else
-      return null;
+    } else {
+      return Collections.emptyMap();
+    }
   }
 }

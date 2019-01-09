@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import jupyter.Displayers;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -178,7 +179,7 @@ public class TestRegistration {
     Assert.assertEquals("Should return null default displayer for class",
         null, Displayers.registration().find(TestObject.class));
     Assert.assertEquals("Should return null default display for instance",
-        null,
+        Collections.emptyMap(),
         Displayers.display(new TestObject()));
   }
 
