@@ -28,7 +28,10 @@ See [instructions on JitPack](https://jitpack.io/#jupyter/jvm-repr) for gradle, 
 
 ### Usage - Library authors
 
-Library authors can register conversion code by implementing a `Displayer` and registering it with `Displayers`.
+Library authors can register conversion code either
+- by implementing a `Displayer` and registering it with `Displayers`, or
+- by having classes extend `AsDisplayData`, whose `display` method returns
+how an instance should be displayed.
 
 For example, the following will register a displayer for Vegas graphs:
 
@@ -52,6 +55,25 @@ import vegas.DSL.ExtendedUnitSpecBuilder
         ).asJava
       }
     })
+```
+
+The following has `Thing` be represented as simple text in Jupyter front-ends,
+like `Thing(2)` for `new Thing(2)`:
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Thing implements AsDisplayData {
+  private int n;
+  public Thing(int n) {
+    this.n = n;
+  }
+  public Map<String, String> display() {
+    Map<String, String> result = new HashMap<>();
+    result.put(MIMETypes.TEXT, "Thing(" + n + ")");
+    return result;
+  }
+}
 ```
 
 Any kernel implementation can use the method to display Vegas graphs for the DSL

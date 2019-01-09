@@ -37,6 +37,20 @@ public class Registration {
   private Displayer<Object> defaultDisplayer = ToStringDisplayer.get();
   private String[] mimeTypes = null;
 
+  private static Displayer<AsDisplayData> asDisplayDataDisplayer = new Displayer<AsDisplayData>() {
+    public Map<String, String> display(AsDisplayData obj) {
+      return obj.display();
+    }
+  };
+
+  private void init() {
+    add(AsDisplayData.class, asDisplayDataDisplayer);
+  }
+
+  public Registration() {
+    init();
+  }
+
   public Map<Class<?>, Displayer<?>> getAll() {
     return Collections.unmodifiableMap(displayers);
   }
@@ -126,5 +140,6 @@ public class Registration {
   void clear() {
     displayers.clear();
     defaultDisplayer = ToStringDisplayer.get();
+    init();
   }
 }
