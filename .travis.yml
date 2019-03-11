@@ -1,8 +1,18 @@
 language: scala
 jdk: openjdk8
+git:
+  depth: false
 cache:
   directories:
   - $HOME/.cache
   - $HOME/.ivy2/cache
   - $HOME/.sbt
-script: sbt test
+stages:
+  - name: test
+  - name: release
+    if: (branch = master AND type = push) OR (tag IS present)
+jobs:
+  include:
+  - script: sbt test
+  - stage: release
+    script: sbt ci-release
