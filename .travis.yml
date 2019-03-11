@@ -1,1 +1,8 @@
-language: java
+language: scala
+jdk: openjdk8
+cache:
+  directories:
+  - $HOME/.cache
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt
+script: sbt test
