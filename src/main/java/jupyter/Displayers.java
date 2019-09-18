@@ -36,7 +36,7 @@ public abstract class Displayers {
    * @param objClass the class of objects to display
    * @param displayer a Displayer instance
    */
-  public static <T> void register(Class<T> objClass, Displayer<T> displayer) {
+  public static <T> void register(Class<T> objClass, Displayer<? extends T> displayer) {
     registration().add(objClass, displayer);
   }
 

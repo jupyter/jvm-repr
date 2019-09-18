@@ -86,7 +86,7 @@ public class Registration {
    * @param objClass the class of objects to display
    * @param displayer a Displayer instance
    */
-  public <T> void add(Class<T> objClass, Displayer<T> displayer) {
+  public <T> void add(Class<T> objClass, Displayer<? extends T> displayer) {
     if (mimeTypes != null) {
       displayer.setMimeTypes(mimeTypes);
     }
