@@ -42,6 +42,9 @@ public class TestRegistration {
   private static class TestObjectSubclass extends TestObject {
   }
 
+  private interface TestGenericInterface<T> {
+  }
+
   @Before
   @After
   public void clearGlobals() {
@@ -148,6 +151,21 @@ public class TestRegistration {
     Assert.assertEquals("Should return registered displayer for instance",
         asMap(MIMETypes.TEXT, expectedString),
         Displayers.display(new TestObjectSubclass()));
+  }
+
+  @Test
+  public void testGenericInterfaces() {
+    Displayer<TestGenericInterface<?>> expected = new Displayer<TestGenericInterface<?>>() {
+      @Override
+      public Map<String, String> display(TestGenericInterface<?> obj) {
+        return asMap(MIMETypes.TEXT, "foobar");
+      }
+    };
+
+    Displayers.register(TestGenericInterface.class, expected);
+
+    Assert.assertEquals("Should return registered displayer for generic interface",
+        expected, Displayers.registration().find(TestGenericInterface.class));
   }
 
   @Test
